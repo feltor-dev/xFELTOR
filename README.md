@@ -4,4 +4,4 @@ xFELTOR provides an interface for collecting the output data from a
 [xarray](https://xarray.pydata.org/en/stable/index.html)
 dataset. 
 
-xFELTOR is inspired by [xBOUT](https://github.com/boutproject/xBOUT).
+xFELTOR is inspired by [xBOUT](https://github.com/boutproject/xBOUT) and uses currently some of its plotting functionality.
