@@ -10,7 +10,7 @@ def open_feltordataset(
     ds = xr.open_mfdataset(
         datapath,
         chunks=chunks,
-        combine='nested'
+        combine="nested",
         concat_dim="time",
         decode_times=False,
         join="outer",
