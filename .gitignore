@@ -130,3 +130,6 @@ dmypy.json
 
 # .nc files
 *.nc
+
+# movies
+*.gif

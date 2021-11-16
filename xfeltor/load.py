@@ -1,12 +1,14 @@
 import xarray as xr
 import numpy as np
+from typing import Union
 
 
 def open_feltordataset(
-    datapath="./*.nc",
-    chunks=None,
-    **kwargs,
-):
+    datapath: str = "./*.nc",
+    chunks: Union[int, dict] = None,
+    restart_indices: bool = False,
+    **kwargs: dict,
+) -> xr.Dataset:
     """Load a dataset of FELTOR ouput files
 
     Parameters
@@ -15,6 +17,8 @@ def open_feltordataset(
         Path to the data to open. Can point to either a set of one or more *nc
         files.
     chunks : dict, optional
+    restart_indices: bool, optional
+        if True, diblicate time steps from restared runs are kept
     kwargs : optional
         Keyword arguments are passed down to `xarray.open_mfdataset`, which in
         turn passes extra kwargs down to `xarray.open_dataset`.
@@ -31,5 +35,9 @@ def open_feltordataset(
         join="outer",
         **kwargs,
     )
+
+    if restart_indices:
+        return ds
+
     _, index = np.unique(ds["time"], return_index=True)
     return ds.isel(time=index)

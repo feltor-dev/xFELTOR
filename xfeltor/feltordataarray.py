@@ -1,6 +1,9 @@
 import xarray as xr
 from xarray import register_dataarray_accessor
 from .plotting import animate_pcolormesh, _create_norm
+from typing import Union, Optional
+import matplotlib.pyplot as plt
+import animatplot as amp
 
 
 @register_dataarray_accessor("feltor")
@@ -9,21 +12,21 @@ class FeltorDataArrayAccessor:
     selecting a variable from a FELTOR dataset."""
 
     def __init__(self, da):
-        self.data = da
+        self.data: xr.Dataset = da
 
     def animate2D(
         self,
-        animate_over="time",
-        x=None,
-        y=None,
-        animate=True,
-        axis_coords=None,
-        fps=10,
-        save_as=None,
-        ax=None,
-        logscale=None,
-        **kwargs,
-    ):
+        animate_over: str = "time",
+        x: str = None,
+        y: str = None,
+        animate: bool = True,
+        axis_coords: Union[Optional[str], Optional[dict]] = None,
+        fps: int = 10,
+        save_as: Union[bool, str] = None,
+        ax: plt.Axes = None,
+        logscale: Union[bool, float] = None,
+        **kwargs: dict,
+    ) -> Union[amp.Animation, amp.blocks.Pcolormesh]:
         """
         Plots a color plot which is animated with time over the specified
         coordinate.
@@ -65,9 +68,6 @@ class FeltorDataArrayAccessor:
             threshold of a symmetric logarithmic scale as
             linthresh=min(abs(vmin),abs(vmax))*logscale, defaults to 1e-5 if True is
             passed.
-        aspect : str or None, optional
-            Argument to set_aspect(). Defaults to "equal" for poloidal plots and "auto"
-            for others.
         kwargs : dict, optional
             Additional keyword arguments are passed on to the plotting function
             (animatplot.blocks.Pcolormesh).
