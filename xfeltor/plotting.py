@@ -282,3 +282,128 @@ def animate_pcolormesh(
         return anim
 
     return pcolormesh_block
+
+
+def animate_line(
+    data,
+    animate_over=None,
+    animate=True,
+    axis_coords=None,
+    vmin=None,
+    vmax=None,
+    fps=10,
+    save_as=None,
+    ax=None,
+    aspect=None,
+    controls="both",
+    **kwargs,
+):
+    """
+    Plots a line plot which is animated with time.
+    Currently only supports 1D+1 data, which it plots with animatplot's Line animation.
+    Parameters
+    ----------
+    data : xarray.DataArray
+    animate_over : str, optional
+        Dimension over which to animate, defaults to the time dimension
+    animate : bool, optional
+        If set to false, do not create the animation, just return the block
+    axis_coords : None, str, dict
+        Coordinates to use for axis labelling.
+        - None: Use the dimension coordinate for each axis, if it exists.
+        - "index": Use the integer index values.
+        - dict: keys are dimension names, values set axis_coords for each axis
+          separately. Values can be: None, "index", the name of a 1d variable or
+          coordinate (which must have the dimension given by 'key'), or a 1d
+          numpy array, dask array or DataArray whose length matches the length of
+          the dimension given by 'key'.
+    vmin : float, optional
+        Minimum value to use for colorbar. Default is to use minimum value of
+        data across whole timeseries.
+    vmax : float, optional
+        Maximum value to use for colorbar. Default is to use maximum value of
+        data across whole timeseries.
+    fps : int, optional
+        Frames per second of resulting gif
+    save_as : True or str, optional
+        If str is passed, save the animation as save_as+'.gif'.
+        If True is passed, save the animation with a default name,
+        '<variable name>_over_<animate_over>.gif'
+    ax : Axes, optional
+        A matplotlib axes instance to plot to. If None, create a new
+        figure and axes, and plot to that
+    aspect : str or None, optional
+        Argument to set_aspect(), defaults to "auto"
+    controls : string or None, default "both"
+        By default, add both the timeline and play/pause toggle to the animation. If
+        "timeline" is passed add only the timeline, if "toggle" is passed add only the
+        play/pause toggle. If None or an empty string is passed, add neither.
+    kwargs : dict, optional
+        Additional keyword arguments are passed on to the plotting function
+        animatplot.blocks.Line
+    Returns
+    -------
+    animation or block
+        If animate==True, returns an animatplot.Animation object, otherwise
+        returns an animatplot.blocks.Line instance.
+    """
+
+    if animate_over is None:
+        animate_over = "time"
+
+    if aspect is None:
+        aspect = "auto"
+
+    variable = data.name
+
+    _, x = data.dims
+
+    # Load values eagerly otherwise for some reason the plotting takes
+    # 100's of times longer - for some reason animatplot does not deal
+    # well with dask arrays!
+    image_data = data.values
+
+    # If not specified, determine max and min values across entire data series
+    if vmax is None:
+        vmax = np.max(image_data)
+    if vmin is None:
+        vmin = np.min(image_data)
+
+    x_values, x_label = _parse_coord_option(x, axis_coords, data)
+
+    if not ax:
+        fig, ax = plt.subplots()
+
+    ax.set_aspect(aspect)
+
+    # set range of plot
+    ax.set_ylim([vmin, vmax])
+
+    line_block = amp.blocks.Line(x_values, image_data, ax=ax, **kwargs)
+
+    if animate:
+        t_values, t_label = _parse_coord_option(animate_over, axis_coords, data)
+        t_values, t_suffix = _normalise_time_coord(t_values)
+
+        timeline = amp.Timeline(t_values, fps=fps, units=t_suffix)
+        anim = amp.Animation([line_block], timeline)
+
+    # Add title and axis labels
+    ax.set_title(variable)
+    ax.set_xlabel(x_label)
+    y_label = data.long_name if "long_name" in data.attrs else variable
+    if "units" in data.attrs:
+        y_label = y_label + f" [{data.units}]"
+    ax.set_ylabel(y_label)
+
+    if animate:
+        _add_controls(anim, controls, t_label)
+
+        if save_as is not None:
+            if save_as is True:
+                save_as = f"{variable}_over_{animate_over}"
+            anim.save(save_as + ".gif", writer=PillowWriter(fps=fps))
+
+        return anim
+
+    return line_block

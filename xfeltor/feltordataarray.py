@@ -1,6 +1,6 @@
 import xarray as xr
 from xarray import register_dataarray_accessor
-from .plotting import animate_pcolormesh, _create_norm
+from .plotting import animate_pcolormesh, _create_norm, animate_line
 from typing import Union, Optional
 import matplotlib.pyplot as plt
 import animatplot as amp
@@ -102,6 +102,75 @@ class FeltorDataArrayAccessor:
             y=y,
             animate=animate,
             axis_coords=axis_coords,
+            fps=fps,
+            save_as=save_as,
+            ax=ax,
+            **kwargs,
+        )
+
+    def animate1D(
+        self,
+        animate_over=None,
+        animate=True,
+        axis_coords=None,
+        fps=10,
+        save_as=None,
+        ax=None,
+        **kwargs,
+    ):
+        """
+        Plots a line plot which is animated over time over the specified coordinate.
+        Currently only supports 1D+1 data, which it plots with animatplot's wrapping of
+        matplotlib's plot.
+        Parameters
+        ----------
+        animate_over : str, optional
+            Dimension over which to animate, defaults to the time dimension
+        axis_coords : None, str, dict
+            Coordinates to use for axis labelling.
+            - None: Use the dimension coordinate for each axis, if it exists.
+            - "index": Use the integer index values.
+            - dict: keys are dimension names, values set axis_coords for each axis
+            separately. Values can be: None, "index", the name of a 1d variable or
+            coordinate (which must have the dimension given by 'key'), or a 1d
+            numpy array, dask array or DataArray whose length matches the length of
+            the dimension given by 'key'.
+        fps : int, optional
+            Frames per second of resulting gif
+        save_as : True or str, optional
+            If str is passed, save the animation as save_as+'.gif'.
+            If True is passed, save the animation with a default name,
+            '<variable name>_over_<animate_over>.gif'
+        ax : Axes, optional
+            A matplotlib axes instance to plot to. If None, create a new
+            figure and axes, and plot to that
+        aspect : str or None, optional
+            Argument to set_aspect(), defaults to "auto"
+        kwargs : dict, optional
+            Additional keyword arguments are passed on to the plotting function
+            (animatplot.blocks.Line).
+        Returns
+        -------
+        animation or block
+            If animate==True, returns an animatplot.Animation object, otherwise
+            returns an animatplot.blocks.Line instance.
+        """
+
+        data = self.data
+        n_dims = len(data.dims)
+
+        assert n_dims == 2, "data must be two dimensional"
+
+        variable = data.name
+        print(
+            f"{variable} data passed has {n_dims} dimensions - will use "
+            "animatplot.blocks.Line()"
+        )
+        return animate_line(
+            data=data,
+            animate_over=animate_over,
+            axis_coords=axis_coords,
+            animate=animate,
             fps=fps,
             save_as=save_as,
             ax=ax,
