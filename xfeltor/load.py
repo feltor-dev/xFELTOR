@@ -39,4 +39,5 @@ def open_feltordataset(
     if restart_indices:
         return ds
 
-    return ds.drop_duplicates()
+    _, index = np.unique(ds["time"], return_index=True)
+    return ds.isel(time=index)

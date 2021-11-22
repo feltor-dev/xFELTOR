@@ -214,7 +214,6 @@ def animate_pcolormesh(
     y_values, y_label = _parse_coord_option(y, axis_coords, data)
 
     data = data.transpose(animate_over, y, x, transpose_coords=True)
-
     # Load values eagerly otherwise for some reason the plotting takes
     # 100's of times longer - for some reason animatplot does not deal
     # well with dask arrays!
@@ -250,7 +249,7 @@ def animate_pcolormesh(
             UserWarning,
         )
         pcolormesh_block = amp.blocks.Pcolormesh(
-            x_values, y_values, image_data, ax=ax, **kwargs
+            x_values, y_values, image_data, shading="auto", ax=ax, **kwargs
         )
 
     if animate:
@@ -278,9 +277,7 @@ def animate_pcolormesh(
             if save_as is True:
                 save_as = f"{variable}_over_{animate_over}"
             anim.save(save_as + ".gif", writer=PillowWriter(fps=fps))
-
         return anim
-
     return pcolormesh_block
 
 

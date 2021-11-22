@@ -4,6 +4,8 @@ from .plotting import animate_pcolormesh, _create_norm, animate_line
 from typing import Union, Optional
 import matplotlib.pyplot as plt
 import animatplot as amp
+from functools import partial
+from pprint import pformat as prettyformat
 
 
 @register_dataarray_accessor("feltor")
@@ -13,6 +15,14 @@ class FeltorDataArrayAccessor:
 
     def __init__(self, da):
         self.data: xr.Dataset = da
+
+    def __str__(self):
+        """
+        String representation of the FeltorDataset.
+        Accessed by print(ds.feltor)
+        """
+        styled = partial(prettyformat, indent=4, compact=False)
+        return "<xfeltor.FeltorDataset>" + "\n{}\n".format(styled(self.data))
 
     def animate2D(
         self,
