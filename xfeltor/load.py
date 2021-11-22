@@ -18,7 +18,7 @@ def open_feltordataset(
         files.
     chunks : dict, optional
     restart_indices: bool, optional
-        if True, diblicate time steps from restared runs are kept
+        if True, dublicate time steps from restared runs are kept
     kwargs : optional
         Keyword arguments are passed down to `xarray.open_mfdataset`, which in
         turn passes extra kwargs down to `xarray.open_dataset`.
@@ -39,5 +39,4 @@ def open_feltordataset(
     if restart_indices:
         return ds
 
-    _, index = np.unique(ds["time"], return_index=True)
-    return ds.isel(time=index)
+    return ds.drop_duplicates()
