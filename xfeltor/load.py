@@ -1,6 +1,7 @@
 import xarray as xr
 import numpy as np
 from typing import Union
+import json
 
 
 def open_feltordataset(
@@ -40,4 +41,14 @@ def open_feltordataset(
         return ds
 
     _, index = np.unique(ds["time"], return_index=True)
+
+    # store inputfile data in ds.attrs
+    tmp = ds.attrs["inputfile"]
+    tmp = tmp.replace("\n", "")
+    tmp = tmp.replace("\t", "")
+    result = json.loads(tmp)
+
+    for i in result:
+        ds.attrs[i] = result[i]
+
     return ds.isel(time=index)

@@ -133,3 +133,6 @@ dmypy.json
 
 # movies
 *.gif
+
+# json files
+*.json
