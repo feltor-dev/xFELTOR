@@ -42,7 +42,39 @@ class FeltorDatasetAccessor:
         tight_layout=True,
         controls="both",
         fps=100,
+        **kwargs,
     ):
+        """
+        Animates list of FeltorDataArrays
+        Parameters
+        ----------
+        variables : list of BoutDataArray
+            Both 2d and 3d variables are valid
+        nrows : int, optional
+            Specify the number of rows of plots
+        ncols : int, optional
+            Specify the number of columns of plots
+        subplots_adjust : dict, optional
+            Arguments passed to fig.subplots_adjust()()
+        animate_over : str, optional
+            Dimension over which to animate, defaults to the time dimension
+        show : bool, optional
+            Call pyplot.show() to display the animation
+        save_as : str, optional
+            If passed, a gif is created with this filename
+        tight_layout : bool or dict, optional
+            If set to False, don't call tight_layout() on the figure.
+            If a dict is passed, the dict entries are passed as arguments to
+            tight_layout()
+        controls : string or None, default "both"
+            By default, add both the timeline and play/pause toggle to the animation. If
+            "timeline" is passed add only the timeline, if "toggle" is passed add only
+            the play/pause toggle. If None or an empty string is passed, add neither.
+        fps : float, optional
+            Indicates the number of frames per second to play
+        **kwargs : dict, optional
+            Additional keyword arguments are passed on to each animation function
+        """
 
         if animate_over is None:
             animate_over = "time"
@@ -79,11 +111,15 @@ class FeltorDatasetAccessor:
 
             if len(v.dims) == 3:
                 line_blocks.append(
-                    v.feltor.animate2D(animate_over="time", animate=False, ax=ax)
+                    v.T.feltor.animate2D(
+                        animate_over="time", animate=False, ax=ax, **kwargs
+                    )
                 )
             elif len(v.dims) == 2:
                 line_blocks.append(
-                    v.feltor.animate1D(animate_over="time", animate=False, ax=ax)
+                    v.feltor.animate1D(
+                        animate_over="time", animate=False, ax=ax, **kwargs
+                    )
                 )
 
         timeline = amp.Timeline(self.data["time"], fps=fps)
