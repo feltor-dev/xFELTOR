@@ -131,8 +131,5 @@ dmypy.json
 # .nc files
 *.nc
 
-# movies
-*.gif
-
 # json files
 *.json
