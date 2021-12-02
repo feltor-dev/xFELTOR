@@ -22,7 +22,7 @@ jobs:
     - name: Docformatter
       run: |
         pip install docformatter
-        docformatter --check -r blobmodel/
+        docformatter --check -r xfeltor/
   pytest:
 
     runs-on: ubuntu-latest
