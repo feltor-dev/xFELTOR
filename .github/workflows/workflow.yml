@@ -19,10 +19,7 @@ jobs:
       run: |
         pip install black
         black --check .
-    - name: Docformatter
-      run: |
-        pip install docformatter
-        docformatter --check -r xfeltor/
+
   pytest:
 
     runs-on: ubuntu-latest
