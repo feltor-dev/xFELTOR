@@ -24,20 +24,20 @@ dataset.
 The data can be loaded with
 
 ```python
-ds = open_feltordataset("./run_dir*/.nc")
+ds = open_feltordataset("./run_dir*/*.nc")
 ```
-
+xFELTOR stores all variables from the FELTOR input file as attributes (xarray.Dataset.attrs).
 ### Plotting Methods
 
 In addition to the extensive functionalities provided by xarray, xFELTOR offers some usefull plotting methods. 
 
-In order to plot the evolution of a 2D variable over time for example one can use:
+In order to plot the evolution of a 2D variable over time:
 ```python
 ds["electrons"].feltor.animate2D(x="x", y="y")
 ```
 ![Density evolution](readme_gifs/2d_blob.gif ) 
 
-For plotting a 1D variable over time you can write:
+For plotting a 1D variable over time:
 ```python
 ds["electrons"].isel(y=100).feltor.animate1D(animate_over="time")
 ```
