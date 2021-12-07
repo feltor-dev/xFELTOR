@@ -14,7 +14,7 @@ xFELTOR is inspired by [xBOUT](https://github.com/boutproject/xBOUT) and uses cu
 Dev install:
 ```
 git clone https://github.com/uit-cosmo/xFELTOR.git
-cd xfeltor
+cd xFELTOR
 pip install -e .
 ```
 
