@@ -11,18 +11,15 @@ from .plotting import _add_controls
 
 @xr.register_dataset_accessor("feltor")
 class FeltorDatasetAccessor:
-    """
-    Contains FELTOR-specific methods to use on FELTOR datasets opened using
-    `open_feltordataset()`.
-
-    """
+    """Contains FELTOR-specific methods to use on FELTOR datasets opened using
+    `open_feltordataset()`."""
 
     def __init__(self, ds):
         self.data = ds
 
     def __str__(self):
-        """
-        String representation of the FeltorDataset.
+        """String representation of the FeltorDataset.
+
         Accessed by print(ds.feltor)
         """
         ds = self.data.copy()

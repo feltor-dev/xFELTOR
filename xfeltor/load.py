@@ -10,7 +10,8 @@ def open_feltordataset(
     restart_indices: bool = False,
     **kwargs: dict,
 ) -> xr.Dataset:
-    """Load a dataset of FELTOR ouput files
+    """Loads FELTOR output into one xarray Dataset. Can load either a single
+    output file or multiple coherent files for restarted simulations.
 
     Parameters
     ----------
