@@ -9,6 +9,15 @@ dataset.
 
 xFELTOR is inspired by [xBOUT](https://github.com/boutproject/xBOUT) and uses currently some of its plotting functionality.
 
+## Why [xarray](https://xarray.pydata.org/en/stable/index.html)?
+
+[xarray](https://xarray.pydata.org/en/stable/index.html) is a powerful open-source python library which aims to provide Pandas-like labelling, visualization & analysis functionality for N-dimensional data. Some of the basic features are:
+* **Labelled multidimensional data**: xarray wraps numpy arrays with their `dims` as `DataArray`s.
+* **Clear syntax for operations**: xarray provides clearer and more general syntax containing less magic numbers than numpy 
+* **Lazy loading into memory**: never wastes RAM on unneeded values
+* **Plotting convenience**: xarray provides plotting functions (wrapping matplotlib) which automatically use an appropriate type of plot for the dimension of the data (1D, 2D etc.)
+
+For more information see the xarray [getting started guide](http://xarray.pydata.org/en/stable/getting-started-guide/why-xarray.html). Tom Nicholas' [presentation](https://github.com/TomNicholas/xBOUT--BOUT-workshop2019) about xarray and xBOUT is also a good place to start. 
 ## Installation
 
 Dev install:
@@ -18,11 +27,11 @@ cd xFELTOR
 pip install -e .
 ```
 
+
 ### Loading your data
 
 The function `open_feltordataset()` uses xarray & dask to collect FELTOR
-data spread across multiple NetCDF files into one contiguous xarray
-dataset.
+data into one xarray dataset. This can be either a single output file or multiple coherent files for restarted simulations.
 
 The data can be loaded with
 
@@ -32,7 +41,7 @@ ds = open_feltordataset("./run_dir*/*.nc")
 xFELTOR stores all variables from the FELTOR input file as attributes (xarray.Dataset.attrs).
 ### Plotting Methods
 
-In addition to the extensive functionalities provided by xarray, xFELTOR offers some usefull plotting methods. 
+In addition to the extensive functionalities provided by xarray, xFELTOR offers some useful plotting methods. 
 
 In order to plot the evolution of a 2D variable over time:
 ```python

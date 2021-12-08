@@ -17,8 +17,8 @@ class FeltorDataArrayAccessor:
         self.data: xr.Dataset = da
 
     def __str__(self):
-        """
-        String representation of the FeltorDataset.
+        """String representation of the FeltorDataset.
+
         Accessed by print(ds.feltor)
         """
         styled = partial(prettyformat, indent=4, compact=False)
