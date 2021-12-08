@@ -18,6 +18,10 @@ def open_feltordataset(
         Path to the data to open. Can point to either a set of one or more *nc
         files.
     chunks : dict, optional
+        Dictionary with keys given by dimension names and values given by chunk sizes.
+        By default, chunks will be chosen to load entire input files into memory at once.
+        This has a major impact on performance: please see the full documentation for more details:
+        http://xarray.pydata.org/en/stable/user-guide/dask.html#chunking-and-performance
     restart_indices: bool, optional
         if True, dublicate time steps from restared runs are kept
     kwargs : optional
