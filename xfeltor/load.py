@@ -43,12 +43,9 @@ def open_feltordataset(
     _, index = np.unique(ds["time"], return_index=True)
 
     # store inputfile data in ds.attrs
-    tmp = ds.attrs["inputfile"]
-    tmp = tmp.replace("\n", "")
-    tmp = tmp.replace("\t", "")
-    result = json.loads(tmp)
+    input_variables = json.loads(ds.attrs["inputfile"])
 
-    for i in result:
-        ds.attrs[i] = result[i]
+    for i in input_variables:
+        ds.attrs[i] = input_variables[i]
 
     return ds.isel(time=index)
