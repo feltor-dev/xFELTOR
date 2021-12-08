@@ -24,7 +24,7 @@ def open_feltordataset(
         This has a major impact on performance: please see the full documentation for more details:
         http://xarray.pydata.org/en/stable/user-guide/dask.html#chunking-and-performance
     restart_indices: bool, optional
-        if True, dublicate time steps from restared runs are kept
+        if True, duplicate time steps from restared runs are kept
     kwargs : optional
         Keyword arguments are passed down to `xarray.open_mfdataset`, which in
         turn passes extra kwargs down to `xarray.open_dataset`.
