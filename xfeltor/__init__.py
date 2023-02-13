@@ -19,4 +19,5 @@ feltordataarray, feltordataset and load are automatically imported by xfeltor
 from .load import open_feltordataset
 from .feltordataarray import FeltorDataArrayAccessor
 from .feltordataset import FeltorDatasetAccessor
-#Why is plotting not loaded? Should it be hidden from help(xfeltor)?
+
+# Why is plotting not loaded? Should it be hidden from help(xfeltor)?

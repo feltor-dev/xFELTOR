@@ -8,8 +8,9 @@ import animatplot as amp
 import numpy as np
 from .plotting import _add_controls
 
+
 # A mechanism to extend the xarray.Dataset class by registering a custom property
-#https://docs.xarray.dev/en/stable/internals/extending-xarray.html
+# https://docs.xarray.dev/en/stable/internals/extending-xarray.html
 @xr.register_dataset_accessor("feltor")
 class FeltorDatasetAccessor:
     """Contains FELTOR-specific methods to use on FELTOR datasets opened using
@@ -28,6 +29,7 @@ class FeltorDatasetAccessor:
     )                                       # use its methods
 
     """
+
     def __init__(self, ds):
         self.data = ds
 
@@ -44,7 +46,7 @@ class FeltorDatasetAccessor:
         print(ds.feltor)
         # same as above but will not print the "inputfile" attribute
         """
-        ds = self.data.copy() # a shallow copy ...
+        ds = self.data.copy()  # a shallow copy ...
         del ds.attrs["inputfile"]
         styled = partial(prettyformat, indent=4, compact=False)
         return "<xfeltor.FeltorDataset>" + "\n{}\n".format(styled(ds))

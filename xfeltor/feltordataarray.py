@@ -10,6 +10,7 @@ from pprint import pformat as prettyformat
 # The README says the plotting routines are from xBOUT. How far is that copy verbose and do we have to mention them here (License)?
 # Or are the methods just named like in the xBOUT library?
 
+
 # A mechanism to extend the xarray.DataArray class by registering a custom property
 # https://docs.xarray.dev/en/stable/generated/xarray.register_dataarray_accessor.html
 @register_dataarray_accessor("feltor")
