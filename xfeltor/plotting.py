@@ -93,6 +93,10 @@ def animate_pcolormesh(
     axis_coords=None,
     vmin=None,
     vmax=None,
+    xmin=None,
+    xmax=None,
+    ymin=None,
+    ymax=None,
     vsymmetric=False,
     logscale=False,
     fps=10,
@@ -102,6 +106,8 @@ def animate_pcolormesh(
     aspect="auto",
     extend=None,
     controls="both",
+    LCFS=None,
+    cmap='bwr',
     **kwargs,
 ):
     """
@@ -137,6 +143,8 @@ def animate_pcolormesh(
     vmax : float, optional
         Maximum value to use for colorbar. Default is to use maximum value of
         data across whole timeseries.
+    xmin, xmax, ymin, ymax : float, optional
+        Range for plotting the animation. Default is to use the whole data range.
     vsymmetric : bool, optional
         If set to true, make the color-scale symmetric
     logscale : bool or float, optional
@@ -165,6 +173,12 @@ def animate_pcolormesh(
         By default, add both the timeline and play/pause toggle to the animation. If
         "timeline" is passed add only the timeline, if "toggle" is passed add only the
         play/pause toggle. If None or an empty string is passed, add neither.
+    LCFS : float, optional
+        To plot on the animation the LCFS. If set LCFS=data["Rho_p"][0], it plots the LCFS.
+        Not easy to define it as rho=1. Future improvement, but not easy with animation.
+        Styling and more lines can be defined in line 292.
+    cmap : string, optional
+        Allows to define the cmap of the animation. Default set to 'bwr'. 
     kwargs : dict, optional
         Additional keyword arguments are passed on to the animation function
         animatplot.blocks.Pcolormesh
@@ -249,7 +263,7 @@ def animate_pcolormesh(
             UserWarning,
         )
         pcolormesh_block = amp.blocks.Pcolormesh(
-            x_values, y_values, image_data, shading="auto", ax=ax, **kwargs
+            x_values, y_values, image_data, shading="auto", ax=ax, **kwargs, cmap=cmap
         )
 
     if animate:
@@ -267,16 +281,22 @@ def animate_pcolormesh(
 
     # Add title and axis labels
     ax.set_title(variable)
+    if xmin, xmax is not None:
+        ax.set_xlim(xmin, xmax)
+    if ymin, ymax is not None:
+        ax.set_ylim(ymin, ymax)
     ax.set_xlabel(x_label)
     ax.set_ylabel(y_label)
 
+    if LCFS is not None:
+        plt.contour(LCFS.x, LCFS.y, LCFS, levels=0, colors='black', linestyles='dashed') #Edit styling LCFS
     if animate:
         _add_controls(anim, controls, t_label)
 
         if save_as is not None:
             if save_as is True:
                 save_as = f"{variable}_over_{animate_over}"
-            anim.save(save_as + ".gif", writer=PillowWriter(fps=fps))
+            anim.save(save_as + ".gif", writer=PillowWriter(fps=fps), dpi=500) 
         return anim
     return pcolormesh_block
 
