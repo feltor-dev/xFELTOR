@@ -263,7 +263,7 @@ def animate_pcolormesh(
             UserWarning,
         )
         pcolormesh_block = amp.blocks.Pcolormesh(
-            x_values, y_values, image_data, shading="auto", ax=ax, **kwargs, cmap=cmap
+            x_values, y_values, image_data, shading="auto", ax=ax, **kwargs, cmap=cmap,
         )
 
     if animate:
@@ -281,9 +281,9 @@ def animate_pcolormesh(
 
     # Add title and axis labels
     ax.set_title(variable)
-    if xmin, xmax is not None:
+    if None not in (xmin, xmax):
         ax.set_xlim(xmin, xmax)
-    if ymin, ymax is not None:
+    if None not in (ymin, ymax):
         ax.set_ylim(ymin, ymax)
     ax.set_xlabel(x_label)
     ax.set_ylabel(y_label)
