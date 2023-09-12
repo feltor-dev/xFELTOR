@@ -281,10 +281,8 @@ def animate_pcolormesh(
 
     # Add title and axis labels
     ax.set_title(variable)
-    if None not in (xmin, xmax):
-        ax.set_xlim(xmin, xmax)
-    if None not in (ymin, ymax):
-        ax.set_ylim(ymin, ymax)
+    ax.set_xlim(xmin, xmax)
+    ax.set_ylim(ymin, ymax)
     ax.set_xlabel(x_label)
     ax.set_ylabel(y_label)
 
