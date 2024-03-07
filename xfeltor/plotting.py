@@ -253,7 +253,7 @@ def animate_pcolormesh(
             y_values,
             image_data,
             ax=ax,
-            **kwargs
+            **kwargs,
             # shading parameter triggers error when trying to set manually
         )
 
