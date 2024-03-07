@@ -8,12 +8,13 @@ def open_feltordataset(
     datapath: str = "./*.nc",
     chunks: Union[int, dict] = None,
     restart_indices: bool = False,
-    inputfile_as_attr: bool = True,
     **kwargs: dict,
 ) -> xr.Dataset:
     """Loads FELTOR output into one xarray Dataset. Can load either a single
     output file or multiple coherent files for restarted simulations.
 
+    if "inputfile" is present as an attribute, it is read as a json string and stored
+            as attributes of the xarray Dataset
     Parameters
     ----------
     datapath : str or (list or tuple of xr.Dataset), optional
@@ -26,9 +27,6 @@ def open_feltordataset(
         http://xarray.pydata.org/en/stable/user-guide/dask.html#chunking-and-performance
     restart_indices: bool, optional
         if True, duplicate time steps from restared runs are kept
-    inputfile_as_attr: bool, optional
-        if True, read in the global attribute "inputfile" as a json string and store its variables
-            as attributes of the xarray Dataset
     kwargs : optional
         Keyword arguments are passed down to `xarray.open_mfdataset`, which in
         turn passes extra kwargs down to `xarray.open_dataset`.
@@ -52,7 +50,7 @@ def open_feltordataset(
     _, index = np.unique(ds["time"], return_index=True)
 
     # store inputfile data in ds.attrs
-    if inputfile_as_attr:
+    if "inputfile" in ds.attrs:
         input_variables = json.loads(ds.attrs["inputfile"])
 
         for i in input_variables:
