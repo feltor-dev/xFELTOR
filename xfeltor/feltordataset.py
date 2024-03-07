@@ -9,20 +9,44 @@ import numpy as np
 from .plotting import _add_controls
 
 
+# A mechanism to extend the xarray.Dataset class by registering a custom property
+# https://docs.xarray.dev/en/stable/internals/extending-xarray.html
 @xr.register_dataset_accessor("feltor")
 class FeltorDatasetAccessor:
     """Contains FELTOR-specific methods to use on FELTOR datasets opened using
-    `open_feltordataset()`."""
+    `open_feltordataset()`.
+
+    This class extends xarray's Dataset class and can be used like:
+
+    ds = xfeltor.open_feltordataset( file ) # create an xarray Dataset
+    feltor_ds = ds.feltor                   # convert to a FeltorDatasetAccessor
+    feltor_ds.animate_list(
+        variables = [
+            ds["electrons"],
+            ds["ions"].isel(y=100),
+            ds["potential"],
+            ds["vorticity"],]
+    )                                       # use its methods
+
+    """
 
     def __init__(self, ds):
         self.data = ds
 
+    # What is the advantage over simply using print(ds) ?
     def __str__(self):
         """String representation of the FeltorDataset.
 
-        Accessed by print(ds.feltor)
+        You can print a summary of the Dataset's content via
+        ds = xfeltor.open_feltordataset( file ) # create an xarray Dataset
+        print(ds)                               # print summary of its content
+
+        Sometimes, you do not want the "inputfile" attribute to be printed.
+        Then use:
+        print(ds.feltor)
+        # same as above but will not print the "inputfile" attribute
         """
-        ds = self.data.copy()
+        ds = self.data.copy()  # a shallow copy ...
         del ds.attrs["inputfile"]
         styled = partial(prettyformat, indent=4, compact=False)
         return "<xfeltor.FeltorDataset>" + "\n{}\n".format(styled(ds))

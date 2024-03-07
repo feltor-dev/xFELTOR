@@ -13,6 +13,8 @@ def open_feltordataset(
     """Loads FELTOR output into one xarray Dataset. Can load either a single
     output file or multiple coherent files for restarted simulations.
 
+    if "inputfile" is present as an attribute, it is read as a json string and stored
+            as attributes of the xarray Dataset
     Parameters
     ----------
     datapath : str or (list or tuple of xr.Dataset), optional
@@ -48,9 +50,10 @@ def open_feltordataset(
     _, index = np.unique(ds["time"], return_index=True)
 
     # store inputfile data in ds.attrs
-    input_variables = json.loads(ds.attrs["inputfile"])
+    if "inputfile" in ds.attrs:
+        input_variables = json.loads(ds.attrs["inputfile"])
 
-    for i in input_variables:
-        ds.attrs[i] = input_variables[i]
+        for i in input_variables:
+            ds.attrs[i] = input_variables[i]
 
     return ds.isel(time=index)

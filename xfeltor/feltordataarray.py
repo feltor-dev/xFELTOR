@@ -7,19 +7,36 @@ import animatplot as amp
 from functools import partial
 from pprint import pformat as prettyformat
 
+# The README says the plotting routines are from xBOUT. How far is that copy verbose and do we have to mention them here (License)?
+# Or are the methods just named like in the xBOUT library?
 
+
+# A mechanism to extend the xarray.DataArray class by registering a custom property
+# https://docs.xarray.dev/en/stable/generated/xarray.register_dataarray_accessor.html
 @register_dataarray_accessor("feltor")
 class FeltorDataArrayAccessor:
     """Contains FELTOR-specific methods to use on FELTOR dataarrays opened by
-    selecting a variable from a FELTOR dataset."""
+    selecting a variable from a FELTOR dataset.
+
+    This class extends xarray's DataArray class and can be used like:
+
+    ds = xfeltor.open_feltordataset( file ) # create an xarray Dataset
+    feltor_ds = ds['electrons'].feltor      # convert to FeltorDataArrayAccessor
+    feltor_ds.animate2D(x="x", y="y")       # use its methods
+    """
 
     def __init__(self, da):
         self.data: xr.Dataset = da
 
+    # What is the advantage over simply using print(ds) ?
     def __str__(self):
         """String representation of the FeltorDataset.
 
-        Accessed by print(ds.feltor)
+        You can print a summary of the DataArray's properties via
+        ds = xfeltor.open_feltordataset( file ) # create an xarray Dataset
+        print(ds["electrons"])
+        # or equivalent
+        print(ds["electrons"].feltor)
         """
         styled = partial(prettyformat, indent=4, compact=False)
         return "<xfeltor.FeltorDataset>" + "\n{}\n".format(styled(self.data))
@@ -42,6 +59,7 @@ class FeltorDataArrayAccessor:
         coordinate.
         Currently only supports 2D+1 data, which it plots with animatplot's
         wrapping of matplotlib's pcolormesh.
+        See also the free function version of this method: xfeltor.plotting.animate_pcolormesh
         Parameters
         ----------
         animate_over : str, optional
@@ -132,6 +150,7 @@ class FeltorDataArrayAccessor:
         Plots a line plot which is animated over time over the specified coordinate.
         Currently only supports 1D+1 data, which it plots with animatplot's wrapping of
         matplotlib's plot.
+        See also the free function version of this method: xfeltor.plotting.animate_line
         Parameters
         ----------
         animate_over : str, optional
