@@ -8,7 +8,7 @@ def open_feltordataset(
     datapath: str = "./*.nc",
     chunks: Union[int, dict] = None,
     restart_indices: bool = False,
-    concat_dim : str = "time",
+    concat_dim: str = "time",
     **kwargs: dict,
 ) -> xr.Dataset:
     """Loads FELTOR output into one xarray Dataset. Can load either a single
@@ -59,5 +59,5 @@ def open_feltordataset(
 
     _, index = np.unique(ds[concat_dim], return_index=True)
 
-    #return ds.isel(time=index)
-    return ds[{concat_dim : index}]
+    # return ds.isel(time=index)
+    return ds[{concat_dim: index}]
