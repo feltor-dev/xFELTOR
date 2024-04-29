@@ -8,6 +8,7 @@ def open_feltordataset(
     datapath: str = "./*.nc",
     chunks: Union[int, dict] = None,
     restart_indices: bool = False,
+    concat_dim : str = "time",
     **kwargs: dict,
 ) -> xr.Dataset:
     """Loads FELTOR output into one xarray Dataset. Can load either a single
@@ -27,6 +28,8 @@ def open_feltordataset(
         http://xarray.pydata.org/en/stable/user-guide/dask.html#chunking-and-performance
     restart_indices: bool, optional
         if True, duplicate time steps from restared runs are kept
+    concat_dim : str, optional
+        The name of the dimension along which to concatenate
     kwargs : optional
         Keyword arguments are passed down to `xarray.open_mfdataset`, which in
         turn passes extra kwargs down to `xarray.open_dataset`.
@@ -38,16 +41,11 @@ def open_feltordataset(
         datapath,
         chunks=chunks,
         combine="nested",
-        concat_dim="time",
+        concat_dim=concat_dim,
         decode_times=False,
         join="outer",
         **kwargs,
     )
-
-    if restart_indices:
-        return ds
-
-    _, index = np.unique(ds["time"], return_index=True)
 
     # store inputfile data in ds.attrs
     if "inputfile" in ds.attrs:
@@ -56,4 +54,10 @@ def open_feltordataset(
         for i in input_variables:
             ds.attrs[i] = input_variables[i]
 
-    return ds.isel(time=index)
+    if restart_indices:
+        return ds
+
+    _, index = np.unique(ds[concat_dim], return_index=True)
+
+    #return ds.isel(time=index)
+    return ds[{concat_dim : index}]
