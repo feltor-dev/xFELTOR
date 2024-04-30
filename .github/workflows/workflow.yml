@@ -28,7 +28,7 @@ jobs:
       matrix:
         python-version: [3.9]
         pip-packages:
-          - "setuptools pip pytest pytest-cov coverage codecov mypy"
+          - "setuptools pip pytest mypy"
       fail-fast: false
 
     steps:
@@ -45,6 +45,4 @@ jobs:
     - name: Test with pytest
       run: |
         pip install pytest
-        pytest -v --cov 
-    - name: Upload coverage to Codecov
-      uses: codecov/codecov-action@v1
+        pytest
