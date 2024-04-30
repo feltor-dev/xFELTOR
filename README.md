@@ -1,6 +1,5 @@
 ![Tests](https://github.com/uit-cosmo/xFELTOR/actions/workflows/workflow.yml/badge.svg)
 [![Sourcery](https://img.shields.io/badge/Sourcery-enabled-brightgreen)](https://sourcery.ai)
-[![codecov](https://codecov.io/gh/uit-cosmo/xFELTOR/branch/main/graph/badge.svg?token=X5056EG1CR)](https://codecov.io/gh/uit-cosmo/xFELTOR)
 # xFELTOR
 xFELTOR provides an interface for collecting the output data from a
 [FELTOR](https://github.com/feltor-dev/feltor) simulation into an
