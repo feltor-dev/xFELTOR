@@ -36,7 +36,6 @@ class TestAnimate:
     """
 
     def test_animate2D(self, create_single_test_dataset):
-
         ds = create_single_test_dataset
         save_dir = "."
         animation = ds["electrons"].feltor.animate2D(save_as="%s/testxy" % save_dir)
@@ -52,7 +51,6 @@ class TestAnimate:
         os.system("rm testxy.gif")
 
     def test_animate1D(self, create_single_test_dataset):
-
         ds = create_single_test_dataset
 
         save_dir = "."
@@ -68,7 +66,6 @@ class TestAnimate:
         os.system("rm test.gif")
 
     def test_animate_list(self, create_single_test_dataset):
-
         ds = create_single_test_dataset
 
         animation = ds.feltor.animate_list([ds["electrons"], ds["electrons"].isel(y=1)])

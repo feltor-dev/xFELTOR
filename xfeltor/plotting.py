@@ -249,7 +249,12 @@ def animate_pcolormesh(
             UserWarning,
         )
         pcolormesh_block = amp.blocks.Pcolormesh(
-            x_values, y_values, image_data, shading="auto", ax=ax, **kwargs
+            x_values,
+            y_values,
+            image_data,
+            ax=ax,
+            **kwargs,
+            # shading parameter triggers error when trying to set manually
         )
 
     if animate:
