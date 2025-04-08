@@ -40,6 +40,8 @@ requires = [
     "setuptools-scm >= 8.0.0", # for automatic version from git tags
 ]
 build-backend = "setuptools.build_meta"
+[tool.setuptools_scm]
+# can be empty if no extra settings are needed, presence enables setuptools-scm
 
 # https://setuptools.pypa.io/en/latest/userguide/pyproject_config.html
 [tool.setuptools.packages.find]
