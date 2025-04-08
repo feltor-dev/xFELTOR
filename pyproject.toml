@@ -1,0 +1,91 @@
+[project]
+name = "xfeltor"
+description = "Collect FELTOR simulation data into xarray"
+authors = [
+    {name = "Gregor Decristoforo", email = "gregor.decristoforo@uit.no"},
+    {name = "Matthias Wiesenberger", email = "mattwi@fysik.dtu.dk"},
+]
+license = {file = "LICENSE"}
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "xarray >= 0.18.0",
+    "dask >= 2021.8.1",
+    "natsort >= 7.1.1",
+    "matplotlib >= 3.4.3",
+    "animatplot >= 0.4.2",
+    "netcdf4 >= 1.5.8",
+    "Pillow >= 8.4.0",
+]
+classifiers =[
+    "Intended Audience :: Science/Research",
+    "Intended Audience :: Education",
+    "Intended Audience :: Developers",
+    "Natural Language :: English",
+    "Operating System :: POSIX :: Linux",
+    "Programming Language :: Python :: 3",
+    "Topic :: Scientific/Engineering :: Visualization",
+]
+dynamic = ["version"]
+
+[project.urls]
+Source = "https://github.com/feltor-dev/xFELTOR"
+Tracker = "https://github.com/feltor-dev/xFELTOR/issues"
+
+# See setuptools info
+# https://setuptools.pypa.io/en/latest/userguide/pyproject_config.html
+[build-system] # which build system to use
+requires = [
+    "setuptools >= 65", # build with setuptools
+    "setuptools-scm >= 8.0.0", # for automatic version from git tags
+]
+build-backend = "setuptools.build_meta"
+
+# https://setuptools.pypa.io/en/latest/userguide/pyproject_config.html
+# [tool.setuptools]
+# We use the "flat" package layout
+# https://setuptools.pypa.io/en/latest/userguide/package_discovery.html#flat-layout
+
+[project.optional-dependencies]
+test = [
+  "pytest",
+]
+
+# https://docs.astral.sh/ruff/
+# pip install .[lint]
+lint = [
+  "ruff", # a python linter and formatter
+]
+
+docs = [
+    "sphinx >= 5.3",
+    "sphinx_autodoc_typehints >= 1.19",
+    "sphinx-book-theme >= 0.4.0rc1",
+    "myst_parser",
+]
+#calc = [
+#    "numpy >= 1.21.1",
+#    "scipy >= 1.7.2",
+#    "dask >= 2021.8.1",
+#]
+
+[tool.ruff.lint]
+select = [
+    "F", # Pyflakes
+    "E", # pycodestyle error
+    "W", # pycodestyle warning
+    "I", # isort
+    "PT", # flake8-pytest-style
+    "B", # flake8-bugbear
+    "A", # flake8-builtins
+    "C4", # flake8-comprehensions
+    "T10", # flake8-debugger
+    # "PTH", # flake8-use-pathlib
+    "SIM", # flake8-simplify
+    "TCH", # flake8-type-checking
+    "UP", # pyupgrade
+    "FURB", # refurb
+    "PERF", # perflint
+    "RUF", # ruff specific
+    "NPY", # NumPy specific
+]
