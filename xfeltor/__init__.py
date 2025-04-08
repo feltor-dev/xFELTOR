@@ -1,5 +1,5 @@
 # docstring displayed by help(xfeltor)
-""" Feltor utility functions built on xarray
+"""Feltor utility functions built on xarray
 
 feltordataarray, feltordataset and load are automatically imported by xfeltor
 
